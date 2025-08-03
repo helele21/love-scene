@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<title>Love Scene</title>
+<style>
+  * {
+    margin: 0; padding: 0; box-sizing: border-box;
+    image-rendering: pixelated;
+  }
+  html, body {
+    width: 100%; height: 100%;
+    overflow: hidden;
+    background-color: #ffeef5;
+    font-family: sans-serif;
+    position: relative;
+  }
+  .heart-container {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    overflow: visible;
+    z-index: 0;
+  }
+  .heart {
+    position: absolute;
+    background-image: url("assets/heart.png");
+    background-size: contain;
+    background-repeat: no-repeat;
+    opacity: 0.4;
+    filter: drop-shadow(0 0 2px #ffb6c1);
+    animation-name: fall;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+  }
+  @keyframes fall {
+    0% {
+      top: var(--startTop);
+      opacity: 0;
+      transform: scale(var(--scale));
+    }
+    10% {
+      opacity: 0.6;
+    }
+    90% {
+      opacity: 0.6;
+    }
+    100% {
+      top: var(--endTop);
+      opacity: 0;
+      transform: scale(var(--scale));
+    }
+  }
+
+  /* Main container: bf, play button, gf in a row */
+  .main-container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 6vw; /* spacing between items */
+    z-index: 2;
+    padding: 0 1rem;
+  }
+
+  /* Character images sizes */
+  img.bf, img.gf {
+    width: 14vw;
+    max-width: 110px;
+  }
+  img.bf {
+    transform: scaleX(-1);
+  }
+
+  /* Play button styling */
+  #playButton {
+    font-size: 2rem;
+    padding: 1rem 2rem;
+    border-radius: 1rem;
+    cursor: pointer;
+    font-weight: bold;
+    background: #fff;
+    color: #ff69b4;
+    border: none;
+    box-shadow: 0 0 12px rgba(255, 105, 180, 0.4);
+    user-select: none;
+    z-index: 3;
+  }
+
+  /* Fullscreen video styling */
+  video {
+    display: none;
+    width: 100vw;
+    height: 100vh;
+    object-fit: contain;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 10;
+    background: black;
+    transform: none !important;
+  }
+
+  @media (max-width: 600px) {
+    img.bf, img.gf {
+      width: 28vw;
+      max-width: 160px;
+    }
+    #playButton {
+      font-size: 1.5rem;
+      padding: 0.8rem 1.6rem;
+    }
+  }
+</style>
+</head>
+<body>
+
+  <div class="heart-container" id="heartContainer"></div>
+
+  <div class="main-container">
+    <img src="assets/bf.png" alt="bf" class="bf" />
+    <button id="playButton">Play</button>
+    <img src="assets/gf.png" alt="gf" class="gf" />
+  </div>
+
+  <video id="loveVideo" src="assets/video.mp4" playsinline controls></video>
+
+  <script>
+    const heartContainer = document.getElementById('heartContainer');
+    const numHearts = 60;
+
+    for (let i = 0; i < numHearts; i++) {
+      const heart = document.createElement('div');
+      heart.classList.add('heart');
+
+      const size = 30 + Math.random() * 20;
+      heart.style.width = size + 'px';
+      heart.style.height = size + 'px';
+
+      heart.style.left = Math.random() * 100 + 'vw';
+
+      const startTop = -size + 'px';
+      const endTop = (window.innerHeight + size) + 'px';
+
+      heart.style.setProperty('--startTop', startTop);
+      heart.style.setProperty('--endTop', endTop);
+
+      heart.style.setProperty('--scale', (0.6 + Math.random() * 0.6));
+
+      heart.style.animationDuration = (20 + Math.random() * 20) + 's';
+
+      heart.style.animationDelay = (-Math.random() * 40) + 's';
+
+      heartContainer.appendChild(heart);
+    }
+
+    const playBtn = document.getElementById('playButton');
+    const video = document.getElementById('loveVideo');
+
+    playBtn.addEventListener('click', async () => {
+      try {
+        video.style.display = 'block';
+
+        if (video.requestFullscreen) {
+          await video.requestFullscreen();
+        } else if (video.webkitRequestFullscreen) {
+          await video.webkitRequestFullscreen();
+        } else if (video.mozRequestFullScreen) {
+          await video.mozRequestFullScreen();
+        }
+
+        await video.play();
+
+        playBtn.style.display = 'none';
+        document.querySelector('.bf').style.display = 'none';
+        document.querySelector('.gf').style.display = 'none';
+      } catch (err) {
+        alert('Could not play video: ' + err.message);
+      }
+    });
+  </script>
+
+</body>
+</html>

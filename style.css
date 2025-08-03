@@ -1,0 +1,83 @@
+body {
+  margin: 0;
+  overflow: hidden;
+  background-color: #ffe6ec;
+  height: 100vh;
+  touch-action: manipulation;
+}
+
+.scale-container {
+  transform: scale(2.5);
+  transform-origin: top left;
+  width: 100vw;
+  height: 100vh;
+  position: relative;
+}
+
+.heart-container {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.heart {
+  position: absolute;
+  background-image: url('assets/heart.png');
+  background-size: cover;
+  animation: float 10s ease-in-out infinite;
+  filter: drop-shadow(0 0 2px #ffb6c1);
+  image-rendering: pixelated;
+}
+
+@keyframes float {
+  0% {
+    transform: translateY(0) scale(1);
+    opacity: 0;
+  }
+  50% {
+    opacity: 0.5;
+  }
+  100% {
+    transform: translateY(-120px) scale(1.3);
+    opacity: 0;
+  }
+}
+
+.play-label {
+  position: absolute;
+  top: 40px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-family: sans-serif;
+  font-size: 24px;
+  color: #ff6b9c;
+  text-shadow: 1px 1px white;
+  z-index: 2;
+  cursor: pointer;
+  user-select: none;
+}
+
+.character-layer {
+  position: absolute;
+  width: 100%;
+  bottom: 20px;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.gf, .bf {
+  position: absolute;
+  width: 64px;
+  height: auto;
+  image-rendering: pixelated;
+}
+
+.gf {
+  left: 60%;
+}
+
+.bf {
+  left: 0%;
+}
